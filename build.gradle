@@ -32,6 +32,14 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	/* 프로젝트 생성 후 추가 */
+	// mariadb
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+	//jwt token 만들 때 Decorders
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
 	// Querydsl 추가 시작
 	// == 스프링 부트 3.0 이상 ==
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
