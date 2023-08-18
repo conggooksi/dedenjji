@@ -4,9 +4,9 @@ spring:
 
 
   datasource:
-    url: jdbc:mysql://mingky.me/KUK?serverTimezone=Asia/Seoul&zeroDateTimeBehavior=CONVERT_TO_NULL&useFractionalSeconds=true&useUnicode=yes&characterEncoding=UTF-8&tinyInt1isBit=false&rewriteBatchedStatements=true&profileSQL=true&logger=Slf4JLogger&maxQuerySizeToLog=999999
-    username: kuk
-    password: Qwpo1209
+    url: jdbc:mysql://localhost:3307/dedenjji
+    username: kuki
+    password: 123123
     #    url: jdbc:mysql://localhost:3307/ModooDiary
     #    username: kuki
     #    password: 123123
