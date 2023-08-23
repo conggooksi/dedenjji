@@ -9,4 +9,6 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberCus
     Optional<Member> findByLoginId(String loginId);
 
     boolean existsByLoginIdAndIsDeletedFalse(String loginId);
+
+    boolean existsByNicknameAndIsDeletedFalse(String nickname);
 }

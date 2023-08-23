@@ -25,11 +25,11 @@ public class BaseEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @CreatedBy
-    @Column(name = "created_by", updatable = false)
-    private Long createdBy;
-
-    @LastModifiedBy
-    @Column(name = "updated_by")
-    private Long updatedBy;
+//    @CreatedBy
+//    @Column(name = "created_by", updatable = false)
+//    private Long createdBy;
+//
+//    @LastModifiedBy
+//    @Column(name = "updated_by")
+//    private Long updatedBy;
 }

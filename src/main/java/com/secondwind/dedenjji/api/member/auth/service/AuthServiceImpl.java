@@ -33,8 +33,14 @@ public class AuthServiceImpl implements AuthService{
                     .build());
         }
 
-        Member member = memberJoinDTO.toMember(memberJoinDTO, passwordEncoder);
+        if (memberRepository.existsByNicknameAndIsDeletedFalse(memberJoinDTO.getNickname())) {
+            throw new CustomAuthException(JsonResultData.failResultBuilder()
+                    .errorCode(AuthErrorCode.ALREADY_JOIN_USER.getCode())
+                    .errorMessage(AuthErrorCode.ALREADY_JOIN_USER.getMessage())
+                    .build());
+        }
 
+        Member member = memberJoinDTO.toMember(memberJoinDTO, passwordEncoder);
 
         return memberRepository.save(member).getId();
     }

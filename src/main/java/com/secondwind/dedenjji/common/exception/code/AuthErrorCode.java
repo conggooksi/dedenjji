@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum AuthErrorCode {
+    ALREADY_EXISTS_NICKNAME("ALREADY_EXISTS_NICKNAME", "이미 존재하는 닉네임입니다."),
     ALREADY_JOIN_USER("ALREADY_JOIN_USER", "이미 존재하는 아이디입니다."),
     PASSWORD_NOT_ENOUGH_CONDITION("PASSWORD_NOT_ENOUGH_CONDITION","패스워드 조건을 만족하지 못했습니다."),
     ACCESS_DENIED("ACCESSDENIED", "접근 거부되었습니다."),
