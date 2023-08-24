@@ -4,6 +4,7 @@ import com.secondwind.dedenjji.common.result.ResponseHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,6 +26,15 @@ public class CustomExceptionHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .errorMessage(e.getErrorEntity().getError().getMessage())
                 .errorCode(e.getErrorEntity().getError().getCode())
+                .build();
+    }
+
+    @ExceptionHandler({UsernameNotFoundException.class})
+    public ResponseEntity<?> exceptionHandler(HttpServletRequest request, final UsernameNotFoundException e) {
+        return ResponseHandler.failResultGenerate()
+                .status(HttpStatus.UNAUTHORIZED)
+                .errorMessage(e.getMessage())
+                .errorCode("NOT_FOUND_ID")
                 .build();
     }
 }

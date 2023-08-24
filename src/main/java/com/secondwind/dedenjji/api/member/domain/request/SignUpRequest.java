@@ -1,4 +1,4 @@
-package com.secondwind.dedenjji.api.member.domain.dto;
+package com.secondwind.dedenjji.api.member.domain.request;
 
 import com.secondwind.dedenjji.api.member.domain.entity.Member;
 import com.secondwind.dedenjji.common.enumerate.Authority;
@@ -8,20 +8,19 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Data
-@NoArgsConstructor
-public class MemberJoinDTO {
+public class SignUpRequest {
     private String loginId;
     private String password;
     private String nickname;
 
     @Builder(builderClassName = "of", builderMethodName = "of")
-    public MemberJoinDTO(String loginId, String password, String nickname) {
+    public SignUpRequest(String loginId, String password, String nickname) {
         this.loginId = loginId;
         this.password = password;
         this.nickname = nickname;
     }
 
-    public Member toMember(MemberJoinDTO memberJoinDTO, PasswordEncoder passwordEncoder) {
+    public Member toMember(SignUpRequest memberJoinDTO, PasswordEncoder passwordEncoder) {
         return Member.of()
                 .loginId(memberJoinDTO.getLoginId())
                 .password(passwordEncoder.encode(memberJoinDTO.getPassword()))
