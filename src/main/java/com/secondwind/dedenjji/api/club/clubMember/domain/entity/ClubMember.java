@@ -1,4 +1,4 @@
-package com.secondwind.dedenjji.api.clubMember.domain.entity;
+package com.secondwind.dedenjji.api.club.clubMember.domain.entity;
 
 import com.secondwind.dedenjji.api.club.domain.entity.Club;
 import com.secondwind.dedenjji.api.member.domain.entity.Member;

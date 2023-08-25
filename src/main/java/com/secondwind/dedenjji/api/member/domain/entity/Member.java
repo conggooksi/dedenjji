@@ -1,6 +1,6 @@
 package com.secondwind.dedenjji.api.member.domain.entity;
 
-import com.secondwind.dedenjji.api.clubMember.domain.entity.ClubMember;
+import com.secondwind.dedenjji.api.club.clubMember.domain.entity.ClubMember;
 import com.secondwind.dedenjji.common.entity.BaseEntity;
 import com.secondwind.dedenjji.common.enumerate.Authority;
 import jakarta.persistence.*;

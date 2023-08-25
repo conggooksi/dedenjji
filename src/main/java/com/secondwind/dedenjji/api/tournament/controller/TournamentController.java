@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Tag(name = "tournament", description = "Tournament API")
-@RestController
-@RequestMapping("/api/tournament")
-@RequiredArgsConstructor
-@Slf4j
-public class TournamentController {
-
-    @Operation(summary = "tournament 생성 API")
-    @PostMapping("/new")
-    public ResponseEntity<?> createTournament() {
-
-        return null;
-    }
-
-
-
-}
+//@Tag(name = "tournament", description = "Tournament API")
+//@RestController
+//@RequestMapping("/api/tournaments")
+//@RequiredArgsConstructor
+//@Slf4j
+//public class TournamentController {
+//
+//    @Operation(summary = "tournament 생성 API")
+//    @PostMapping("/new")
+//    public ResponseEntity<?> createTournament() {
+//
+//        return null;
+//    }
+//
+//
+//
+//}
