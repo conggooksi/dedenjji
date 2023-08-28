@@ -38,4 +38,12 @@ public class ClubMember extends BaseEntity {
         this.clubAuthority = clubAuthority;
         this.isAllowed = isAllowed;
     }
+
+    public void makeIsAllowed() {
+        this.isAllowed = true;
+    }
+
+    public void changeClubMemberLevel(Level level) {
+        this.level = level;
+    }
 }

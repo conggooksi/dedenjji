@@ -1,5 +1,6 @@
 package com.secondwind.dedenjji.api.club.service;
 
+import com.secondwind.dedenjji.api.club.clubMember.domain.entity.ClubMember;
 import com.secondwind.dedenjji.api.club.domain.entity.Club;
 import com.secondwind.dedenjji.api.club.domain.request.ClubSearch;
 import com.secondwind.dedenjji.api.club.domain.request.CreateClubRequest;
@@ -14,6 +15,7 @@ import com.secondwind.dedenjji.api.member.repository.MemberRepository;
 import com.secondwind.dedenjji.common.enumerate.ClubAuthority;
 import com.secondwind.dedenjji.common.exception.ApiException;
 import com.secondwind.dedenjji.common.exception.code.ClubErrorCode;
+import com.secondwind.dedenjji.common.exception.code.ClubMemberErrorCode;
 import com.secondwind.dedenjji.common.exception.code.MemberErrorCode;
 import com.secondwind.dedenjji.common.utility.SecurityContextHolderUtil;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +61,7 @@ public class ClubServiceImpl implements ClubService {
                         .build());
 
 
-        Long clubMemberId = clubMemberService.createClubMember(member, club, makeClubRequest.getLevel(), ClubAuthority.TEAM_ADMIN);
+        Long clubMemberId = clubMemberService.createClubMember(member, club, makeClubRequest.getLevel(), ClubAuthority.CLUB_ADMIN);
 
         return clubMemberId;
     }
@@ -73,6 +75,16 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public ClubDetail getClub(Long id) {
+        Long currentMemberId = SecurityContextHolderUtil.getCurrentMemberId();
+        ClubMember clubMember = clubMemberService.getClubMemberByClubIdAndMemberId(id, currentMemberId);
+        if (!clubMember.isAllowed()) {
+            throw ApiException.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .errorMessage(ClubMemberErrorCode.NOT_ALLOWED.getMessage())
+                    .errorCode(ClubMemberErrorCode.NOT_ALLOWED.getCode())
+                    .build();
+        }
+
         Club club = clubRepository.findClub(id).orElseThrow(
                 () -> ApiException.builder()
                         .status(HttpStatus.BAD_REQUEST)
@@ -89,29 +101,38 @@ public class ClubServiceImpl implements ClubService {
     @Override
     @Transactional
     public Long updateClub(UpdateClubRequest updateClubRequest) {
-        Club club = clubRepository.findById(updateClubRequest.getId()).orElseThrow(
-                () -> ApiException.builder()
-                        .errorCode(ClubErrorCode.CLUB_NOT_FOUND.getCode())
-                        .errorMessage(ClubErrorCode.CLUB_NOT_FOUND.getMessage())
-                        .status(HttpStatus.BAD_REQUEST)
-                        .build());
+        Long currentMemberId = SecurityContextHolderUtil.getCurrentMemberId();
+        ClubMember clubMember = clubMemberService.getClubMemberByClubIdAndMemberId(updateClubRequest.getId(), currentMemberId);
+        if (!clubMember.getClubAuthority().equals(ClubAuthority.CLUB_ADMIN)) {
+            throw ApiException.builder()
+                    .errorMessage(ClubErrorCode.NOT_PERMITTED.getMessage())
+                    .errorCode(ClubErrorCode.NOT_PERMITTED.getCode())
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build();
+        }
+        Club club = clubMember.getClub();
 
         club.updateClubBuilder()
                 .name(updateClubRequest.getName())
                 .build();
+
         return club.getId();
     }
 
     @Override
     @Transactional
     public void deleteClub(Long id) {
-        Club club = clubRepository.findById(id).orElseThrow(
-                () -> ApiException.builder()
-                        .errorCode(ClubErrorCode.CLUB_NOT_FOUND.getCode())
-                        .errorMessage(ClubErrorCode.CLUB_NOT_FOUND.getMessage())
-                        .status(HttpStatus.BAD_REQUEST)
-                        .build());
+        Long currentMemberId = SecurityContextHolderUtil.getCurrentMemberId();
+        ClubMember clubMember = clubMemberService.getClubMemberByClubIdAndMemberId(id, currentMemberId);
 
-        clubRepository.delete(club);
+        if (!clubMember.getClubAuthority().equals(ClubAuthority.CLUB_ADMIN)) {
+            throw ApiException.builder()
+                    .errorCode(ClubErrorCode.NOT_PERMITTED.getCode())
+                    .errorMessage(ClubErrorCode.NOT_PERMITTED.getMessage())
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .build();
+        }
+
+        clubRepository.delete(clubMember.getClub());
     }
 }

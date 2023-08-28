@@ -1,5 +1,6 @@
 package com.secondwind.dedenjji.api.club.service;
 
+import com.secondwind.dedenjji.api.club.clubMember.domain.request.AddClubMemberRequest;
 import com.secondwind.dedenjji.api.club.domain.request.ClubSearch;
 import com.secondwind.dedenjji.api.club.domain.request.CreateClubRequest;
 import com.secondwind.dedenjji.api.club.domain.request.UpdateClubRequest;

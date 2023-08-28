@@ -1,5 +1,10 @@
 package com.secondwind.dedenjji.api.club.controller;
 
+import com.secondwind.dedenjji.api.club.clubMember.domain.request.AddClubMemberRequest;
+import com.secondwind.dedenjji.api.club.clubMember.domain.request.AllowClubMemberRequest;
+import com.secondwind.dedenjji.api.club.clubMember.domain.request.ChangeClubMemberLevelRequest;
+import com.secondwind.dedenjji.api.club.clubMember.domain.request.DeleteClubMemberRequest;
+import com.secondwind.dedenjji.api.club.clubMember.service.ClubMemberService;
 import com.secondwind.dedenjji.api.club.domain.request.ClubSearch;
 import com.secondwind.dedenjji.api.club.domain.request.CreateClubRequest;
 import com.secondwind.dedenjji.api.club.domain.request.UpdateClubRequest;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class ClubController {
     private final ClubService clubService;
+    private final ClubMemberService clubMemberService;
 
     @Operation(summary = "클럽 생성 API")
     @PostMapping("/new")
@@ -72,6 +78,50 @@ public class ClubController {
         return ResponseHandler.generate()
                 .data(null)
                 .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @Operation(summary = "클럽에 멤버 추가 API")
+    @PostMapping("/new_member")
+    public ResponseEntity<?> addClubMember(@RequestBody AddClubMemberRequest addClubMemberRequest) {
+        Long clubMemberId = clubMemberService.addClubMember(addClubMemberRequest);
+
+        return ResponseHandler.generate()
+                .data(clubMemberId)
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @Operation(summary = "클럽 멤버 가입 허용 API")
+    @PatchMapping("/allow")
+    public ResponseEntity<?> allowClubMember(@RequestBody AllowClubMemberRequest allowClubMemberRequest) {
+        clubMemberService.allowClubMember(allowClubMemberRequest);
+
+        return ResponseHandler.generate()
+                .data(null)
+                .status(HttpStatus.OK)
+                .build();
+    }
+
+    @Operation(summary = "클럽의 멤버 삭제 API")
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteClubMember(@RequestBody DeleteClubMemberRequest deleteClubMemberRequest) {
+        clubMemberService.deleteClubMember(deleteClubMemberRequest);
+
+        return ResponseHandler.generate()
+                .data(null)
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @Operation(summary = "클럽 멤버 레벨 변경 API")
+    @PatchMapping("/level")
+    public ResponseEntity<?> changeClubLevel(@RequestBody ChangeClubMemberLevelRequest changeClubMemberLevelRequest) {
+        clubMemberService.changeClubMemberLevel(changeClubMemberLevelRequest);
+
+        return ResponseHandler.generate()
+                .data(null)
+                .status(HttpStatus.OK)
                 .build();
     }
 }

@@ -31,7 +31,7 @@ public class Member extends BaseEntity {
     private String lastAccessToken;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ClubMember> teamMembers = new ArrayList<>();
+    private List<ClubMember> clubMembers = new ArrayList<>();
 
     @Builder(builderMethodName = "of", builderClassName = "of")
     public Member(Long id, String loginId, String password, String nickname, Authority authority, boolean isDeleted) {

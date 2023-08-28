@@ -1,3 +1,4 @@
+server.port: 9093
 spring:
   jwt:
     secret: 0b54d7023218baa53fdda9c81ff24ad2410cbb628b537d6c5be68fdc5c2383452a642d6aba788de0b92cefbcbcfc084491d34a80bfdac0ae75296e4c06a64bff
