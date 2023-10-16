@@ -3,6 +3,7 @@ package com.secondwind.dedenjji.api.category.domain.entity;
 import com.secondwind.dedenjji.api.tournament.domain.entity.Tournament;
 import com.secondwind.dedenjji.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,4 +20,11 @@ public class Category {
     private String name;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Tournament> tournaments = new ArrayList<>();
+
+    @Builder(builderClassName = "of", builderMethodName = "of")
+    public Category(Long id, String name, List<Tournament> tournaments) {
+        this.id = id;
+        this.name = name;
+        this.tournaments = tournaments;
+    }
 }

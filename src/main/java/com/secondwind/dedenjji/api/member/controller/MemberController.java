@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
 
-    @Operation(summary = "닉네임 변경 API", description = "관리자라면 id에 수정하고 싶은 유저의 id를 넣어주세요. id가 없다면 현재 로그인한 유저의 닉네임을 변경합니다.")
+    @Operation(summary = "닉네임 변경 API", description = "관리자가 다른 유저의 닉네임을 변경하려면 id에 수정하고 싶은 유저의 id를 넣어주세요. id가 null이라면 현재 로그인한 자신의 닉네임을 변경합니다.")
     @PatchMapping("/nickname")
     public ResponseEntity<?> updateNickname(@RequestBody UpdateNicknameRequest updateMemberRequest) {
         Long memberId = memberService.updateNickname(updateMemberRequest);

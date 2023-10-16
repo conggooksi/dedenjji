@@ -41,7 +41,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
         ClubMember clubMember = ClubMember.of()
                 .member(member)
                 .club(club)
-                .level(level)
+                .level(level != null? level : Level.JOONGSU)
                 .clubAuthority(clubAuthority)
                 .isAllowed(true)
                 .build();
@@ -87,7 +87,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
         ClubMember clubMember = ClubMember.of()
                 .member(member)
                 .club(club)
-                .level(Level.JOONGSU)
+                .level(addClubMemberRequest.getLevel())
                 .isAllowed(false)
                 .clubAuthority(ClubAuthority.CLUB_USER)
                 .build();
@@ -117,7 +117,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
             throw ApiException.builder()
                     .errorCode(ClubErrorCode.NOT_PERMITTED.getCode())
                     .errorMessage(ClubErrorCode.NOT_PERMITTED.getMessage())
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.FORBIDDEN)
                     .build();
         }
 
@@ -157,7 +157,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
             throw ApiException.builder()
                     .errorCode(ClubErrorCode.NOT_PERMITTED.getCode())
                     .errorMessage(ClubErrorCode.NOT_PERMITTED.getMessage())
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.FORBIDDEN)
                     .build();
         }
 
@@ -187,7 +187,7 @@ public class ClubMemberServiceImpl implements ClubMemberService {
             throw ApiException.builder()
                     .errorCode(ClubErrorCode.NOT_PERMITTED.getCode())
                     .errorMessage(ClubErrorCode.NOT_PERMITTED.getMessage())
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.FORBIDDEN)
                     .build();
         }
 

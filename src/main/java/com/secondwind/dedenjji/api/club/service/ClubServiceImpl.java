@@ -107,7 +107,7 @@ public class ClubServiceImpl implements ClubService {
             throw ApiException.builder()
                     .errorMessage(ClubErrorCode.NOT_PERMITTED.getMessage())
                     .errorCode(ClubErrorCode.NOT_PERMITTED.getCode())
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.FORBIDDEN)
                     .build();
         }
         Club club = clubMember.getClub();
@@ -129,7 +129,7 @@ public class ClubServiceImpl implements ClubService {
             throw ApiException.builder()
                     .errorCode(ClubErrorCode.NOT_PERMITTED.getCode())
                     .errorMessage(ClubErrorCode.NOT_PERMITTED.getMessage())
-                    .status(HttpStatus.UNAUTHORIZED)
+                    .status(HttpStatus.FORBIDDEN)
                     .build();
         }
 
