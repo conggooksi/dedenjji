@@ -1,14 +1,18 @@
 package com.secondwind.dedenjji.api.category.service;
 
 import com.secondwind.dedenjji.api.category.domain.entity.Category;
+import com.secondwind.dedenjji.api.category.domain.request.CategorySearchRequest;
 import com.secondwind.dedenjji.api.category.domain.request.CreateCategoryRequest;
+import com.secondwind.dedenjji.api.category.domain.request.UpdateCategoryRequest;
+import com.secondwind.dedenjji.api.category.domain.response.CategoryResponse;
 import com.secondwind.dedenjji.api.category.repository.CategoryRepository;
-import com.secondwind.dedenjji.common.enumerate.Authority;
 import com.secondwind.dedenjji.common.exception.ApiException;
 import com.secondwind.dedenjji.common.exception.code.CategoryErrorCode;
 import com.secondwind.dedenjji.common.utility.SecurityContextHolderUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,14 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public Long createCategory(CreateCategoryRequest createCategoryRequest) {
-        Authority currentAuthority = SecurityContextHolderUtil.getCurrentAuthority();
-        if (currentAuthority != Authority.ROLE_ADMIN) {
-            throw ApiException.builder()
-                    .errorMessage(CategoryErrorCode.NOT_PERMITTED.getMessage())
-                    .errorCode(CategoryErrorCode.NOT_PERMITTED.getCode())
-                    .status(HttpStatus.FORBIDDEN)
-                    .build();
-        }
+        SecurityContextHolderUtil.checkRoleAdmin();
 
         String categoryName = createCategoryRequest.getName();
         if (categoryRepository.existsByName(categoryName)) {
@@ -45,5 +42,44 @@ public class CategoryServiceImpl implements CategoryService {
 
         Long categoryId = categoryRepository.save(category).getId();
         return categoryId;
+    }
+
+    @Override
+    public Slice<CategoryResponse> getCategories(CategorySearchRequest categorySearchRequest) {
+        PageRequest pageRequest = PageRequest.of(categorySearchRequest.getOffset(), categorySearchRequest.getLimit(), categorySearchRequest.getDirection(), categorySearchRequest.getOrderBy());
+        Slice<CategoryResponse> categoryResponses = categoryRepository.searchCategories(categorySearchRequest, pageRequest);
+        return categoryResponses;
+    }
+
+    @Override
+    @Transactional
+    public void updateCategory(UpdateCategoryRequest updateCategoryRequest) {
+        SecurityContextHolderUtil.checkRoleAdmin();
+
+        Category category = categoryRepository.findById(updateCategoryRequest.getId()).orElseThrow(
+                () -> ApiException.builder()
+                        .errorMessage(CategoryErrorCode.CATEGORY_NOT_FOUND.getMessage())
+                        .errorCode(CategoryErrorCode.CATEGORY_NOT_FOUND.getCode())
+                        .status(HttpStatus.BAD_REQUEST)
+                        .build());
+
+        category.updateCategoryBuilder()
+                .name(updateCategoryRequest.getName())
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public void deleteCategory(Long id) {
+        SecurityContextHolderUtil.checkRoleAdmin();
+
+        Category category = categoryRepository.findById(id).orElseThrow(
+                () -> ApiException.builder()
+                        .errorMessage(CategoryErrorCode.CATEGORY_NOT_FOUND.getMessage())
+                        .errorCode(CategoryErrorCode.CATEGORY_NOT_FOUND.getCode())
+                        .status(HttpStatus.BAD_REQUEST)
+                        .build());
+
+        categoryRepository.delete(category);
     }
 }

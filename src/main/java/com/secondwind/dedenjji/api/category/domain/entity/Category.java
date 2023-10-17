@@ -1,7 +1,6 @@
 package com.secondwind.dedenjji.api.category.domain.entity;
 
 import com.secondwind.dedenjji.api.tournament.domain.entity.Tournament;
-import com.secondwind.dedenjji.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,5 +25,10 @@ public class Category {
         this.id = id;
         this.name = name;
         this.tournaments = tournaments;
+    }
+
+    @Builder(builderClassName = "updateCategoryBuilder", builderMethodName = "updateCategoryBuilder")
+    public void updateCategory(String name) {
+        this.name = name;
     }
 }

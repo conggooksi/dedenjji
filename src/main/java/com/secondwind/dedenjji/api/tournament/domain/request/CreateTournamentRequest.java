@@ -1,6 +1,5 @@
 package com.secondwind.dedenjji.api.tournament.domain.request;
 
-import com.secondwind.dedenjji.api.tournament.domain.entity.Tournament;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 

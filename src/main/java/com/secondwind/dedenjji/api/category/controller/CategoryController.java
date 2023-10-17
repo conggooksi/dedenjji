@@ -1,18 +1,10 @@
 package com.secondwind.dedenjji.api.category.controller;
 
+import com.secondwind.dedenjji.api.category.domain.request.CategorySearchRequest;
 import com.secondwind.dedenjji.api.category.domain.request.CreateCategoryRequest;
+import com.secondwind.dedenjji.api.category.domain.request.UpdateCategoryRequest;
+import com.secondwind.dedenjji.api.category.domain.response.CategoryResponse;
 import com.secondwind.dedenjji.api.category.service.CategoryService;
-import com.secondwind.dedenjji.api.club.clubMember.domain.request.AddClubMemberRequest;
-import com.secondwind.dedenjji.api.club.clubMember.domain.request.AllowClubMemberRequest;
-import com.secondwind.dedenjji.api.club.clubMember.domain.request.ChangeClubMemberLevelRequest;
-import com.secondwind.dedenjji.api.club.clubMember.domain.request.DeleteClubMemberRequest;
-import com.secondwind.dedenjji.api.club.clubMember.service.ClubMemberService;
-import com.secondwind.dedenjji.api.club.domain.request.ClubSearch;
-import com.secondwind.dedenjji.api.club.domain.request.CreateClubRequest;
-import com.secondwind.dedenjji.api.club.domain.request.UpdateClubRequest;
-import com.secondwind.dedenjji.api.club.domain.response.ClubDetail;
-import com.secondwind.dedenjji.api.club.domain.response.ClubResponse;
-import com.secondwind.dedenjji.api.club.service.ClubService;
 import com.secondwind.dedenjji.common.result.ResponseHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,6 +32,37 @@ public class CategoryController {
         return ResponseHandler.generate()
                 .data(categoryId)
                 .status(HttpStatus.CREATED)
+                .build();
+    }
+
+    @Operation(summary = "카테고리 슬라이스 조회 API")
+    @GetMapping("")
+    public ResponseEntity<?> getCategories(CategorySearchRequest categorySearchRequest) {
+        Slice<CategoryResponse> categories = categoryService.getCategories(categorySearchRequest);
+
+        return ResponseHandler.generate()
+                .data(categories)
+                .status(HttpStatus.OK)
+                .build();
+    }
+
+    @Operation(summary = "카테고리 수정 API")
+    @PatchMapping("")
+    public ResponseEntity<?> updateCategory(@RequestBody UpdateCategoryRequest updateCategoryRequest) {
+        categoryService.updateCategory(updateCategoryRequest);
+        return ResponseHandler.generate()
+                .data(null)
+                .status(HttpStatus.OK)
+                .build();
+    }
+
+    @Operation(summary = "카테고리 삭제 API")
+    @DeleteMapping("/{category_id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable(value = "category_id") Long id) {
+        categoryService.deleteCategory(id);
+        return ResponseHandler.generate()
+                .data(null)
+                .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 }
